@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"Diversitios "</string>
+    <string name="action_settings">Settings</string>
+    <string name="nombre">Name:</string>
+    <string name="accion_preferencias">Preferences</string>
+    <string name="accion_acerca_de">About</string>
+    <string name="accion_salir">Exit</string>
+    <string name="acercade">Application design project for the MISIONTIC 2022 App Development Course. GROUP6 SPRINT 4</string>
+    <string name="cancelar">Cancel</string>
+    <string name="guardar">Save</string>
+</resources>

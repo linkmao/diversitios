@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Diversitios</string>
+    <string name="mensaje_fab" translatable="false"> Clic en el botón fab</string>
+    <string name="accion_mostrar" translatable="false">Mostrar Lugares</string>
+    <string name="accion_preferencias">Preferencias</string>
+    <string name="accion_acerca_de">Acerca de </string>
+    <string name="accion_salir">Salir</string>
+    <string name="action_settings">Ajustes</string>
+
+    <string name="comentario" translatable="false">Comentario</string>
+    <string name="nombre">Nombre del Diversitio:</string>
+    <string name="ejemplonombre" translatable="false">Ejemplo: Parque...</string>
+    <string name="tipo_lugar" translatable="false">Tipo:</string>
+    <string name="direccion" translatable="false">Dirección:</string>
+    <string name="direccion_ejemplo" translatable="false">Ejemplo: Calle xx #xx-xx,ciudad</string>
+    <string name="telefono" translatable="false">Teléfono:</string>
+    <string name="tel_contacto" translatable="false">Ejemplo: 3xx xxx xxxx</string>
+    <string name="url" translatable="false">Url:</string>
+    <string name="web" translatable="false">Página web o Red social</string>
+    <string name="notas" translatable="false">¿Que fue los que mas te gusto del Diversitio?</string>
+    <string name="acercade">Proyecto de diseño de aplicaciones para el curso de Desarollo de App MISIONTIC 2022. GRUPO6 SPRINT 4</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="guardar">Guardar</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve"
+        translatable="false">AIzaSyBmHqTbkZo90uuJsioZ8hV36qdg0xPCr_A
+
+    </string>
+
+</resources>
