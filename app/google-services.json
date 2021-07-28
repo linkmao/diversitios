@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "900077230216",
+    "project_id": "diversitios-ba850",
+    "storage_bucket": "diversitios-ba850.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900077230216:android:90ff099ebc8d1ebfac273d",
+        "android_client_info": {
+          "package_name": "com.grupo.Diversitios"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "900077230216-4otd6d3q6qd64rfc0onjgkfp3ei1r1k7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grupo.Diversitios",
+            "certificate_hash": "f9a0914c2f616b7eb6e1b14403a636c75de8438f"
+          }
+        },
+        {
+          "client_id": "900077230216-8vgrpl9hnhipkkpvosav9kqfei3k7t29.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqIRh23dQKRKiGNCLZoRcZfpcA70WD8lE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "900077230216-8vgrpl9hnhipkkpvosav9kqfei3k7t29.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900077230216:android:48879a5f8bd09f98ac273d",
+        "android_client_info": {
+          "package_name": "com.grupo.mis_lugares_tic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "900077230216-8vgrpl9hnhipkkpvosav9kqfei3k7t29.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqIRh23dQKRKiGNCLZoRcZfpcA70WD8lE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "900077230216-8vgrpl9hnhipkkpvosav9kqfei3k7t29.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
