@@ -22,6 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.grupo.Diversitios.R;
+import com.grupo.Diversitios.datos.Usuarios;
 
 public class LoginActivity extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener {
@@ -107,6 +108,7 @@ public class LoginActivity extends FragmentActivity implements
 
     private void verificaSiUsuarioValidado() {
         if (auth.getCurrentUser() != null) {
+            Usuarios.guardarUsuario(auth.getCurrentUser());
             Intent i = new Intent(this, MainActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_NEW_TASK
@@ -185,4 +187,26 @@ public class LoginActivity extends FragmentActivity implements
         }
         return false;
     }
+
+    public void restablecer_contra (View v){
+        correo = etCorreo.getText().toString();
+        tilCorreo.setError("");
+        if (correo.isEmpty())
+        { tilCorreo.setError("Introduce un correo"); }
+        else if (!correo.matches(".+@.+[.].+"))
+        { tilCorreo.setError("Correo no válido"); }
+        else { dialogo.show();
+            auth.sendPasswordResetEmail(correo).addOnCompleteListener(new OnCompleteListener<Void>()
+            { @Override public void onComplete(Task<Void> task)
+            { dialogo.dismiss();
+            if (task.isSuccessful())
+            { mensaje("Verifica tu correo para cambiar contraseña."); }
+            else { mensaje("ERROR al mandar correo para cambiar contraseña"); }
+            }
+            });
+        }
+        }
+
+
+
 }

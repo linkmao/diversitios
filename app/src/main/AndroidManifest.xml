@@ -14,21 +14,29 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/icono_app_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Diversitios">
+        android:theme="@style/Theme.Diversitios"
+        android:usesCleartextTraffic="true">
         <activity android:name="com.grupo.Diversitios.presentacion.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Diversitios.NoActionBar">
         </activity>
+
+        <activity android:name=".presentacion.UsuarioActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".presentacion.iniciador"
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen">
         </activity>
 
         <activity android:name=".presentacion.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+
         </activity>
 
         <activity android:name="com.grupo.Diversitios.presentacion.AcercaDeActivity"

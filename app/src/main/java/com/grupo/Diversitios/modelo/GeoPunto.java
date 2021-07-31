@@ -18,6 +18,10 @@ public class GeoPunto {
         this.latitud = latitud;
     }
 
+    public GeoPunto() {
+    }
+
+
     @Override
     public String toString() {
         return new String("longitud=" + longitud +

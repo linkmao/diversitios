@@ -6,10 +6,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
@@ -17,14 +20,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.grupo.Diversitios.Aplicacion;
+import com.grupo.Diversitios.Firebase.AdaptadorLugaresFirestore;
 import com.grupo.Diversitios.R;
 import com.grupo.Diversitios.casos_uso.CasosUsoActividades;
 import com.grupo.Diversitios.casos_uso.CasosUsoLocalizacion;
 import com.grupo.Diversitios.casos_uso.CasosUsoLugar;
 import com.grupo.Diversitios.datos.LugaresBD;
+import com.grupo.Diversitios.modelo.Lugar;
+
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     //private RepositorioLugares lugares;
     private CasosUsoLugar usoLugar;
     private CasosUsoActividades usoActividades;
+
+    private AdaptadorLugaresFirestore adaptadorLugaresFirestore;
+
 
     static final int RESULTADO_PREFERENCIAS = 0;
 
@@ -51,12 +64,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        StrictMode.setThreadPolicy(new
+                StrictMode.ThreadPolicy.Builder().permitAll().build());
 
         adaptador = ((Aplicacion) getApplication()).adaptador;
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adaptador);
+       // recyclerView = findViewById(R.id.recyclerView);
+       // recyclerView.setHasFixedSize(true);
+       // recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //recyclerView.setAdapter(adaptadorLugaresFirestore);
+
+        //firestore
+        cargarInfoFromFirestore();
+        adaptadorLugaresFirestore.startListening();
 
 
         lugares = ((Aplicacion) getApplication()).lugares;
@@ -83,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("Tag en Main","Mensaje prueba por el logcat");
 
+        /*
         adaptador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +112,18 @@ public class MainActivity extends AppCompatActivity {
                 usoLugar.mostrar(posicion);
             }
         });
+        */
+
+        /*
+        //importar lugaresDB a cloud firestore
+        FirebaseFirestore firestoreDB_lugares = FirebaseFirestore.getInstance();
+        for(int id=0; id<adaptador.getItemCount();id++){
+            Log.d("MAIN","tamaño base datos ->"+adaptador.lugarPosicion(id));
+            firestoreDB_lugares.collection("lugares").add(adaptador.lugarPosicion(id)
+            );
+        }
+        */
+
 
     }
 
@@ -162,6 +195,11 @@ public class MainActivity extends AppCompatActivity {
             usoActividades.lanzarMapa();
             return true;
         }
+        if (id == R.id.menu_usuario){
+            usoActividades.lanzarUsuario();
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -194,4 +232,65 @@ public class MainActivity extends AppCompatActivity {
                 usoLugar.mostrar(0);*/
         }
     }
+
+    public void cargarInfoFromFirestore(){
+        Query query = FirebaseFirestore.getInstance()
+                .collection("lugares")
+                .limit(50);
+        FirestoreRecyclerOptions<Lugar> opciones = new
+                FirestoreRecyclerOptions
+                        .Builder<Lugar>().setQuery(query,Lugar.class).build();
+        adaptadorLugaresFirestore = new
+                AdaptadorLugaresFirestore(opciones,this);
+        Log.d("TAG MAIN","cargarfirestore " + query.toString() +
+                "\nrecycler"+opciones.toString());
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adaptadorLugaresFirestore);
+
+        adaptadorLugaresFirestore.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                int posicion = recyclerView.getChildAdapterPosition(view);
+                Lugar item_lugar = adaptadorLugaresFirestore.getItem(posicion);
+                String id_lugar =
+                        adaptadorLugaresFirestore.getSnapshots().getSnapshot(posicion).getId();
+                Log.d("MAIN","clic adaptador id"+id_lugar);
+                Log.d("TAG","lugar elegido "+id_lugar + " coleccion\n" +
+
+                        FirebaseFirestore.getInstance().collection("lugares").document(id_lugar))
+                ;
+                Context context = getAppContext();
+                Intent intent = new Intent(context,VistaLugarActivity.class);
+                intent.putExtra("lugar_fire",id_lugar);
+                context.startActivity(intent);
+            }
+        });
+
+
+    }
+    @Override protected void onStart() {
+        super.onStart();
+        adaptadorLugaresFirestore.startListening();
+        currentcontext=this;
+
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adaptadorLugaresFirestore.stopListening();
+    }
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        adaptadorLugaresFirestore.stopListening();
+    }
+
+    private static MainActivity currentcontext;
+    public static MainActivity getCurrentContext()
+    { return currentcontext; }
+    public static Context getAppContext(){
+        return MainActivity.getCurrentContext();
+    }
+
+
 }

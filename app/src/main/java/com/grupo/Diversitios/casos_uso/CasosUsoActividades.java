@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.grupo.Diversitios.presentacion.AcercaDeActivity;
 import com.grupo.Diversitios.presentacion.MapaActivity;
 import com.grupo.Diversitios.presentacion.PreferenciasActivity;
+import com.grupo.Diversitios.presentacion.UsuarioActivity;
 
 public class CasosUsoActividades {
 
@@ -28,6 +29,10 @@ public class CasosUsoActividades {
     public void lanzarMapa() {
       //actividad.startActivity(new Intent(actividad, MapaActivity.class));
    }
+
+
+    public void lanzarUsuario(){ actividad.startActivity(new
+            Intent(actividad, UsuarioActivity.class)); }
 
 
 }

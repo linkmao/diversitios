@@ -15,7 +15,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.grupo.Diversitios.Aplicacion;
+import com.grupo.Diversitios.Firebase.AdaptadorLugaresFirestore;
 import com.grupo.Diversitios.R;
 import com.grupo.Diversitios.casos_uso.CasosUsoLugar;
 import com.grupo.Diversitios.datos.LugaresBD;
@@ -36,12 +38,18 @@ public class VistaLugarActivity extends AppCompatActivity {
     final static int RESULTADO_GALERIA = 2;
     final static int RESULTADO_FOTO = 3;
 
+    private AdaptadorLugaresFirestore adaptadorLugaresFirestore;
+    private String idLugar;
+
+
     private Uri uriUltimaFoto;
 
     private LugaresBD lugares;
     private AdaptadorLugaresBD adaptador;
 
     public int _id;
+
+
 
     @Override protected void onCreate(Bundle savedInstanceState)
     {   super.onCreate(savedInstanceState);
@@ -65,6 +73,10 @@ public class VistaLugarActivity extends AppCompatActivity {
         abrirGaleria();
         tomarFotoCamara();
         eliminarFoto();
+        idLugar = extras.getString("lugar_fire");
+        Log.d("TAG","vista lugar elegido-> "+idLugar + " coleccion "+
+                FirebaseFirestore.getInstance().collection("lugares").document(idLugar));
+
     }
 
     public void eliminarFoto(){
