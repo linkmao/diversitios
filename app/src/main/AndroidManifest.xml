@@ -23,18 +23,20 @@
 
         <activity android:name=".presentacion.UsuarioActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity android:name=".presentacion.iniciador"
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
 
         <activity android:name=".presentacion.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
 
 
         </activity>
