@@ -88,11 +88,11 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         for (int pos=0; pos<adaptador.getItemCount(); pos++){//lugares.tamaño()
             //lugares.elemento(pos).getNombre()
             if (adaptador.lugarPosicion(pos).getNombre()
-                    .equals(marker.getTitle())){
+                    .equals(marker.getTitle())){/*
                 Intent intent = new Intent(this, VistaLugarActivity.class);
                 intent.putExtra("pos", pos);
                 startActivity(intent);
-                break;
+                break;*/
             }
         }
     }

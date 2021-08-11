@@ -2,6 +2,8 @@ package com.grupo.Diversitios;
 
 import android.app.Application;
 
+import com.grupo.Diversitios.Firebase.LugaresAsinc;
+import com.grupo.Diversitios.Firebase.LugaresFirestore;
 import com.grupo.Diversitios.datos.LugaresBD;
 import com.grupo.Diversitios.datos.RepositorioLugares;
 import com.grupo.Diversitios.modelo.GeoPunto;
@@ -18,10 +20,13 @@ public class Aplicacion extends Application {
 
     //ADAPTADOR BASE DATOS SQLite
     public AdaptadorLugaresBD adaptador;
+    //FIREBASE
+    public LugaresAsinc lugaresAsinc;
     @Override public void onCreate() {
         super.onCreate();
         lugares = new LugaresBD(this);
         adaptador= new AdaptadorLugaresBD(lugares, lugares.extraeCursor());
+        lugaresAsinc= new LugaresFirestore();
     }
 
     //get de RepositorioLugares

@@ -6,60 +6,42 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name="com.grupo.Diversitios.Aplicacion"
         android:allowBackup="true"
-        android:icon="@drawable/diversitios"
+        android:icon="@mipmap/icono_app"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/icono_app_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Diversitios"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.grupo.Diversitios.presentacion.MainActivity"
+        <activity android:name=".presentacion.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Diversitios.NoActionBar">
-        </activity>
-
-        <activity android:name=".presentacion.UsuarioActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name=".presentacion.iniciador"
-            android:theme="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
 
-        <activity android:name=".presentacion.LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-
-
-        </activity>
-
-        <activity android:name="com.grupo.Diversitios.presentacion.AcercaDeActivity"
+        <activity android:name=".presentacion.AcercaDeActivity"
             android:label="@string/accion_acerca_de"
             android:theme="@style/Theme.AppCompat.Light.Dialog">
 
         </activity>
 
-        <activity android:name="com.grupo.Diversitios.presentacion.VistaLugarActivity"
+        <activity android:name=".presentacion.VistaLugarActivity"
             android:label="Vista Lugar"
             android:screenOrientation="portrait">
 
         </activity>
 
-        <activity android:name="com.grupo.Diversitios.presentacion.EdicionLugarActivity"
+        <activity android:name=".presentacion.EdicionLugarActivity"
             android:label="Edición lugar"
             android:screenOrientation="portrait">
 
         </activity>
 
-        <activity android:name="com.grupo.Diversitios.presentacion.PreferenciasActivity"
+        <activity android:name=".presentacion.PreferenciasActivity"
             android:label="Preferencias Mis Lugares"
             android:screenOrientation="portrait">
         </activity>
@@ -76,9 +58,28 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name="com.grupo.Diversitios.presentacion.MapaActivity"
+        <activity android:name=".presentacion.MapaActivity"
             android:screenOrientation="portrait"
             tools:ignore="MissingClass" />
+
+        <activity android:name=".presentacion.LoginActivity"
+            android:theme="@style/Theme.Diversitios.NoActionBar">
+
+        </activity>
+
+        <activity android:name=".presentacion.UsuarioActivity"
+            android:label="Información del usuario"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".presentacion.iniciador"
+            android:theme="@style/Theme.Diversitios.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
     </application>
 
 </manifest>

@@ -16,11 +16,24 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.grupo.Diversitios.Aplicacion;
+import com.grupo.Diversitios.Firebase.AdaptadorLugaresFirestore;
+import com.grupo.Diversitios.Firebase.LugaresAsinc;
 import com.grupo.Diversitios.datos.LugaresBD;
+import com.grupo.Diversitios.datos.RepositorioLugares;
 
 import com.grupo.Diversitios.modelo.GeoPunto;
 import com.grupo.Diversitios.modelo.Lugar;
@@ -41,15 +54,25 @@ public class CasosUsoLugar {
     private LugaresBD lugares;
     private AdaptadorLugaresBD adaptador;
 
+    //FIREBASE
+    private AdaptadorLugaresFirestore adaptadorLugaresFirestore;
+    public LugaresAsinc lugaresAsinc;
+    private CollectionReference instanciaColeccion = FirebaseFirestore.getInstance().collection("lugares");
     //constructor de la clase
-    public CasosUsoLugar(Activity actividad, LugaresBD lugares, AdaptadorLugaresBD adaptador) {
+    public CasosUsoLugar(Activity actividad, LugaresAsinc lugares, AdaptadorLugaresFirestore adaptador) {
         this.actividad = actividad;
-        this.lugares = lugares;
-        this.adaptador = adaptador;
+        this.lugaresAsinc = lugares;
+        this.adaptadorLugaresFirestore = adaptador;
+        Query query = FirebaseFirestore.getInstance()
+                .collection("lugares")
+                .limit(50);
+        FirestoreRecyclerOptions<Lugar> opciones = new FirestoreRecyclerOptions
+                .Builder<Lugar>().setQuery(query,Lugar.class).build();
+        adaptadorLugaresFirestore = new AdaptadorLugaresFirestore(opciones, actividad.getApplicationContext());
     }
 
     // OPERACIONES BÁSICAS
-    public void mostrar(int pos) {
+    public void mostrar(String pos) {
         Intent mostrar = new Intent(actividad, VistaLugarActivity.class);
         mostrar.putExtra("pos", pos);
         actividad.startActivity(mostrar);
@@ -62,27 +85,39 @@ public class CasosUsoLugar {
     }
 
     public void actualizaPosLugar(int pos, Lugar lugar) {
-        int id = adaptador.idPosicion(pos);
+        String id = adaptadorLugaresFirestore.getKey(pos);
         guardar(id, lugar);
     }
 
-    public void guardar(int id, Lugar nuevoLugar){
-        Log.d("TAG","usulugar guardar " + id + " "+ nuevoLugar+"\ncursor guardar casos uso lugar"+lugares.extraeCursor()) ;
-        lugares.actualiza(id,nuevoLugar);
-        adaptador.setCursor(lugares.extraeCursor());
-        adaptador.notifyDataSetChanged();
+    public void guardar(String id, Lugar nuevoLugar){
+        //Log.d("TAG","usulugar guardar " + id + " "+ nuevoLugar+"\ncursor guardar casos uso lugar"+lugares.extraeCursor()) ;
+        lugaresAsinc.actualiza(id,nuevoLugar);
+        //adaptador.setCursor(lugares.extraeCursor());
+        adaptadorLugaresFirestore.notifyDataSetChanged();
+        //adaptador.notifyDataSetChanged();
     }
 
-    public void borrar(final int id) {
-        Log.d("usoslugar"," tamaño " + adaptador.getItemId(id));
+    public void borrar(final String id) {
+        //Log.d("usoslugar"," tamaño " + adaptadorLugaresFirestore.getPos(id));
         new AlertDialog.Builder(actividad)
                 .setTitle("Borrado de lugar")
                 .setMessage("¿Seguro de eliminar este lugar?")
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        lugares.borrar(id);
-                        adaptador.setCursor(lugares.extraeCursor());
-                        adaptador.notifyDataSetChanged();
+                        //lugaresAsinc.borrar(id);
+                        instanciaColeccion.document(id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(actividad.getApplicationContext(), "Lugar eliminado",Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(Exception e) {
+                                Toast.makeText(actividad.getApplicationContext(), "Error al eliminar lugar firestore "+e.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        //adaptador.setCursor(lugares.extraeCursor());
+                        adaptadorLugaresFirestore.notifyDataSetChanged();
                         actividad.finish();
 
                     }})
@@ -95,8 +130,8 @@ public class CasosUsoLugar {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("text/plain");
         i.putExtra(Intent.EXTRA_TEXT,"Observa este lugar "
-        +lugar.getNombre() + " - " + lugar.getUrl()+ "\n"
-        +lugar.getFoto()) ;
+                +lugar.getNombre() + " - " + lugar.getUrl()+ "\n"
+                +lugar.getFoto()) ;
         actividad.startActivity(i);
     }
 
@@ -132,8 +167,6 @@ public class CasosUsoLugar {
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("image/*");
-        /*if (fragment != null)
-            fragment.startActivityForResult(i, codidoSolicitud); else*/
         actividad.startActivityForResult(i, codidoSolicitud);
     }
 
@@ -145,14 +178,14 @@ public class CasosUsoLugar {
     }
 
     public void nuevo() {
-        int id = lugares.nuevo();
-        GeoPunto posicion = ((Aplicacion) actividad.getApplication()).posicionActual;
+        String id = lugaresAsinc.nuevo();
+        /*GeoPunto posicion = ((Aplicacion) actividad.getApplication()).posicionActual;
         if (!posicion.equals(GeoPunto.SIN_POSICION)) {
-            Lugar lugar = lugares.elemento(id);
+            Lugar lugar = lugaresAsinc.elemento(id);
             lugar.setPosicion(posicion);
-            lugares.actualiza(id, lugar);
+            lugaresAsinc.actualiza(id, lugar);
         }
-        Log.d("TAG","posicion creada "+posicion);
+        Log.d("TAG","posicion creada "+posicion);*/
         Intent nuevo_lugar = new Intent(actividad, EdicionLugarActivity.class);
         nuevo_lugar.putExtra("_id", id);
         actividad.startActivity(nuevo_lugar);
@@ -184,9 +217,6 @@ public class CasosUsoLugar {
             //intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intento_tomarFoto.putExtra(MediaStore.EXTRA_OUTPUT, uriUltimaFoto);
             actividad.startActivityForResult(intento_tomarFoto, codidoSolicitud);
-            /*if (fragment != null)
-                fragment.startActivityForResult(intento_tomarFoto, codidoSolicitud);
-            else actividad.startActivityForResult(intento_tomarFoto, codidoSolicitud);*/
             return uriUltimaFoto;
         } catch (IOException ex) {
             Toast.makeText(actividad, "Error al crear fichero de imagen",

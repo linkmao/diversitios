@@ -27,12 +27,11 @@ public class CasosUsoActividades {
    }
 
     public void lanzarMapa() {
-      //actividad.startActivity(new Intent(actividad, MapaActivity.class));
+        actividad.startActivity(new Intent(actividad, MapaActivity.class));
    }
 
-
-    public void lanzarUsuario(){ actividad.startActivity(new
-            Intent(actividad, UsuarioActivity.class)); }
-
+   public void lanzarUsuario(){ actividad.startActivity(new
+            Intent(actividad, UsuarioActivity.class));
+    }
 
 }

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+
 import androidx.fragment.app.FragmentActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -50,6 +52,29 @@ public class LoginActivity extends FragmentActivity implements
         dialogo = new ProgressDialog(this);
         dialogo.setTitle("Verificando usuario");
         dialogo.setMessage("Por favor espere...");
+        //Focus Cambiar imagenes
+        ImageView img;
+        EditText contrasena;
+        img=(ImageView) findViewById(R.id.imageView5);
+        img.setImageResource(R.drawable.ojosabiertos);
+        contrasena= (EditText) findViewById(R.id.contraseña);
+        contrasena.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+
+                if (!hasFocus) {
+                    img.setImageResource(R.drawable.ojosabiertos);
+                }else{
+                    img.setImageResource(R.drawable.ojoscerrados);
+                }
+
+            }
+        });
+
+
+
+
+
 
         //sesion google
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
@@ -106,6 +131,7 @@ public class LoginActivity extends FragmentActivity implements
         mensaje("Error de autentificación con Google");
     }
 
+
     private void verificaSiUsuarioValidado() {
         if (auth.getCurrentUser() != null) {
             Usuarios.guardarUsuario(auth.getCurrentUser());
@@ -117,6 +143,28 @@ public class LoginActivity extends FragmentActivity implements
             finish();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void registroCorreo(View v) {
         if (verificaCampos()) {
